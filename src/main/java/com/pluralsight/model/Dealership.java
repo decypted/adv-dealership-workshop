@@ -117,8 +117,8 @@ public class Dealership {
         return queryVehicles;
     }
 
-    public void getAllVehicle(){
-        System.out.println(this.getInventory());
+    public List<Vehicle> getAllVehicle(){
+        return new ArrayList<>(this.getInventory());
     }
 
     @Override

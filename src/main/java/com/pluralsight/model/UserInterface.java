@@ -53,6 +53,9 @@ public class UserInterface {
             case 2 -> processGetByMakeModel();
             case 3 -> processGetByYear();
             case 4 -> processGetByColor();
+            case 5 -> processGetByMileage();
+            case 6 -> processGetByType();
+            case 7 -> processGetAllVehicle();
         }
 
     }
@@ -85,6 +88,24 @@ public class UserInterface {
         String color = Console.askForString("What color is the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByColor(color);
         FormatHelper.formatHelperVehicleDisplay(queryResult, "Color");
+    }
+
+    public void processGetByMileage(){
+        int minMileage = Console.askForInt("Minimum Mileage", 0 , 9999999);
+        int maxMilage = Console.askForInt("Maximum Mileage", 0 , 9999999);
+        List<Vehicle> queryResult = dealership.getVehiclesByMileage(minMileage, maxMilage);
+        FormatHelper.formatHelperVehicleDisplay(queryResult, "Mileage");
+    }
+
+    public void processGetByType(){
+        String type = Console.askForString("What is the make/model of the vehicle");
+        List<Vehicle> queryResult = dealership.getVehiclesByType(type);
+        FormatHelper.formatHelperVehicleDisplay(queryResult, "Returned model");
+    }
+
+    public void processGetAllVehicle(){
+        List<Vehicle> all = dealership.getAllVehicle();
+        FormatHelper.formatHelperVehicleDisplay(all, "All");
     }
 
 }
