@@ -1,6 +1,7 @@
 package com.pluralsight.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Dealership {
     private String name;
@@ -49,6 +50,75 @@ public class Dealership {
 
     public void setInventory(ArrayList<Vehicle> inventory) {
         this.inventory = inventory;
+    }
+
+    public List<Vehicle> getVehiclesByPrice(double minPrice, double maxPrice){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            System.out.println(v);
+            if(v.getPrice() >= minPrice && v.getPrice() <= maxPrice){
+                queryVehicles.add(v);
+            }
+        }
+        return queryVehicles;
+    }
+
+    public List<Vehicle> getVehiclesByMake(String make){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(make.contains(v.getMake())){
+                queryVehicles.add(v);
+            }
+        }
+
+        return queryVehicles;
+    }
+
+    public List<Vehicle> getVehiclesByYear(int year){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(v.getYear() == year){
+                queryVehicles.add(v);
+            }
+        }
+
+        return queryVehicles;
+    }
+
+    public List<Vehicle> getVehiclesByColor(String color){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(v.getColor().equalsIgnoreCase(color)){
+                queryVehicles.add(v);
+            }
+        }
+
+        return queryVehicles;
+    }
+
+    public List<Vehicle> getVehiclesByMileage(int minMileage, int maxMileage){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(v.getOdometer() >= minMileage && v.getOdometer() <= maxMileage){
+                queryVehicles.add(v);
+            }
+        }
+
+        return queryVehicles;
+    }
+
+    public List<Vehicle> getVehiclesByType(String type){
+        List<Vehicle> queryVehicles = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(v.getVehicleType().equalsIgnoreCase(type)){
+                queryVehicles.add(v);
+            }
+        }
+        return queryVehicles;
+    }
+
+    public void getAllVehicle(){
+        System.out.println(this.getInventory());
     }
 
     @Override
