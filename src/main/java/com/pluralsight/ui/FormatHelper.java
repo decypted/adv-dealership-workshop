@@ -35,7 +35,7 @@ public class FormatHelper {
         } else {
             resultColor = ColorCodes.GREEN;
         }
-        System.out.printf("Found %d %s%s\n", vehicles.size(), resultColor,  r);
+        System.out.printf("Found %d %s%s%s\n", vehicles.size(), resultColor,  r, ColorCodes.RESET);
 
         if(vehicles.isEmpty()){
             System.out.println("No vehicles found matching your query. Try broadening your search.");

@@ -4,6 +4,8 @@ import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
 
 import java.lang.classfile.Interfaces;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,9 @@ public class UserInterface {
 
         switch (userInputToInt){
             case 1 -> processGetByPriceRequest();
+            case 2 -> processGetByMakeModel();
+            case 3 -> processGetByYear();
+            case 4 -> processGetByColor();
         }
 
     }
@@ -60,6 +65,26 @@ public class UserInterface {
 
         FormatHelper.formatHelperVehicleDisplay(queryResult, "The following are priced X through Y");
 
+    }
+
+    public void processGetByMakeModel(){
+        String make = Console.askForString("What is the make/model of the vehicle");
+        List<Vehicle> queryResult = dealership.getVehiclesByMakeOrModel(make);
+        FormatHelper.formatHelperVehicleDisplay(queryResult, "Returned model");
+    }
+
+    public void processGetByYear(){
+        Year currentYear = Year.now();
+        int pYear = Integer.parseInt(String.valueOf(currentYear));
+        int year = Console.askForInt("What is the year?", 1920, pYear);
+        List<Vehicle> queryResult = dealership.getVehiclesByYear(year);
+        FormatHelper.formatHelperVehicleDisplay(queryResult);
+    }
+
+    public void processGetByColor(){
+        String color = Console.askForString("What color is the vehicle");
+        List<Vehicle> queryResult = dealership.getVehiclesByColor(color);
+        FormatHelper.formatHelperVehicleDisplay(queryResult, "Color");
     }
 
 }

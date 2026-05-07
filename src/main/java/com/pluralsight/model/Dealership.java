@@ -63,10 +63,10 @@ public class Dealership {
         return queryVehicles;
     }
 
-    public List<Vehicle> getVehiclesByMake(String make){
+    public List<Vehicle> getVehiclesByMakeOrModel(String makemodel){
         List<Vehicle> queryVehicles = new ArrayList<>();
         for(Vehicle v: this.getInventory()){
-            if(make.contains(v.getMake())){
+            if((makemodel.contains(v.getMake()) || (makemodel.contains(v.getModel())))){
                 queryVehicles.add(v);
             }
         }
