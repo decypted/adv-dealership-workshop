@@ -3,8 +3,7 @@ package com.pluralsight.data;
 import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DealershipInventoryFileManager {
@@ -68,5 +67,41 @@ public class DealershipInventoryFileManager {
         return null;
     }
 
+//
+
+    public void saveDealership(Dealership dealership) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.dealershipInventoryFileName, false));
+            String dealerShipInfo = String.format("%s|%s|%s\n",
+                    dealership.getName(),
+                    dealership.getAddress(),
+                    dealership.getPhone()
+            );
+
+            bufferedWriter.write(dealerShipInfo);
+
+            for (Vehicle v: dealership.getAllVehicle()) {
+                String vehicleLine = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",
+                        v.getVin(),
+                        v.getYear(),
+                        v.getMake(),
+                        v.getModel(),
+                        v.getVehicleType(),
+                        v.getColor(),
+                        v.getOdometer(),
+                        v.getPrice()
+                );
+                bufferedWriter.write(vehicleLine);
+            }
+            System.out.println("Inventory was saved.");
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("File not found" + e.getMessage());
+        }
+    }
 }
+
+
+
 

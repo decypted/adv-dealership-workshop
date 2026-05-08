@@ -1,7 +1,10 @@
 package com.pluralsight.model;
 
+import com.pluralsight.data.DealershipInventoryFileManager;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Dealership {
     private String name;
@@ -18,6 +21,10 @@ public class Dealership {
 
     public void addVehicle(Vehicle vehicle) {
         this.inventory.add(vehicle);
+    }
+
+    public void deleteVehicle(Vehicle vehicle){
+        this.inventory.remove(vehicle);
     }
 
     public ArrayList<Vehicle> getInventory() {
@@ -55,7 +62,6 @@ public class Dealership {
     public List<Vehicle> getVehiclesByPrice(double minPrice, double maxPrice){
         List<Vehicle> queryVehicles = new ArrayList<>();
         for(Vehicle v: this.getInventory()){
-            System.out.println(v);
             if(v.getPrice() >= minPrice && v.getPrice() <= maxPrice){
                 queryVehicles.add(v);
             }
@@ -74,10 +80,10 @@ public class Dealership {
         return queryVehicles;
     }
 
-    public List<Vehicle> getVehiclesByYear(int year){
+    public List<Vehicle> getVehiclesByYear(int minYear, int maxYear){
         List<Vehicle> queryVehicles = new ArrayList<>();
         for(Vehicle v: this.getInventory()){
-            if(v.getYear() == year){
+            if(v.getYear() >= minYear && v.getYear() <= maxYear ){
                 queryVehicles.add(v);
             }
         }
@@ -120,6 +126,29 @@ public class Dealership {
     public List<Vehicle> getAllVehicle(){
         return new ArrayList<>(this.getInventory());
     }
+
+    public void addVehicle(
+            int vin,
+            int year,
+            String make,
+            String model,
+            String vehicleType,
+            String color,
+            int odometer,
+            double price
+    ){
+
+        Vehicle v = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+        this.inventory.add(v);
+        DealershipInventoryFileManager dealershipInventoryFileManager = new DealershipInventoryFileManager("files/inventory.csv");
+
+        try {
+            dealershipInventoryFileManager.saveDealership(this);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public String toString() {

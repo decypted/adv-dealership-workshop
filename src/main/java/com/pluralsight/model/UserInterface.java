@@ -1,5 +1,6 @@
 package com.pluralsight.model;
 
+import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
 
@@ -16,78 +17,93 @@ public class UserInterface {
         this.dealership = dealership;
     }
 
+
     public void display(){
+        boolean running = true;
 
         System.out.println("\t Welcome to " + dealership.getName());
 
-        String m = """
-        +-----------------------------------------+
-        |                                         |
-        |   [1]  Search by Price                  |
-        |   [2]  Search by Make / Model           |
-        |   [3]  Search by Year                   |
-        |   [4]  Search by Color                  |
-        |   [5]  Search by Mileage                |
-        |   [6]  Search by Vehicle Type           |
-        |   [7]  All Vehicles                     |
-        |   [8]  Add Vehicle                      |
-        |   [9]  Remove Vehicle                   |
-        |                                         |
-        +-----------------------------------------+
-        |   [X] Quit                             |
-        +-----------------------------------------+
-        
-        Awaiting user input: >""";
+        while (running) {
 
-        String userInput = Console.askForString(m);
-        int userInputToInt;
-        try {
-            userInputToInt = Integer.parseInt(userInput);
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
+
+            String m = """
+                    +-----------------------------------------+
+                    |                                         |
+                    |   [1]  Search by Price                  |
+                    |   [2]  Search by Make / Model           |
+                    |   [3]  Search by Year                   |
+                    |   [4]  Search by Color                  |
+                    |   [5]  Search by Mileage                |
+                    |   [6]  Search by Vehicle Type           |
+                    |   [7]  All Vehicles                     |
+                    |   [8]  Add Vehicle                      |
+                    |   [9]  Remove Vehicle                   |
+                    |                                         |
+                    +-----------------------------------------+
+                    |   [X] Quit                             |
+                    +-----------------------------------------+
+                    
+                    Awaiting user input: >""";
+
+            String userInput = Console.askForString(m);
+
+            if(userInput.equalsIgnoreCase("x")){
+                userInput = userInput.toUpperCase();
+            }
+
+            switch (userInput) {
+                case "1" -> processGetByPriceRequest();
+                case "2" -> processGetByMakeModel();
+                case "3" -> processGetByYear();
+                case "4" -> processGetByColor();
+                case "5" -> processGetByMileage();
+                case "6" -> processGetByType();
+                case "7" -> processGetAllVehicle();
+                case "8" -> processAddVehcile();
+                case "X" -> {
+                    System.out.println("Goodbye! We hope to see you again");
+                    running = false;
+                }
+                default -> System.out.println("Invalid option.");
+            }
+
         }
+    }
 
-        switch (userInputToInt){
-            case 1 -> processGetByPriceRequest();
-            case 2 -> processGetByMakeModel();
-            case 3 -> processGetByYear();
-            case 4 -> processGetByColor();
-            case 5 -> processGetByMileage();
-            case 6 -> processGetByType();
-            case 7 -> processGetAllVehicle();
-        }
-
+    public void displaySearchResult(List<Vehicle> results, String header){
+        FormatHelper.formatHelperVehicleDisplay(results, header);
+        Console.promptForExit("You can exit the program at any time by using\n", "x");
     }
 
     public void processGetByPriceRequest(){
         double minPrice = Console.askForDouble("What is the minimum price you are looking for");
         double maxPrice = Console.askForDouble("What is the max price?");
-
         List<Vehicle> queryResult = dealership.getVehiclesByPrice(minPrice, maxPrice);
-
-        FormatHelper.formatHelperVehicleDisplay(queryResult, "The following are priced X through Y");
-
+        String header = "Vehicles priced from $%.2f to $%.2f".formatted(minPrice, maxPrice);
+        displaySearchResult(queryResult, header);
     }
 
     public void processGetByMakeModel(){
         String make = Console.askForString("What is the make/model of the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByMakeOrModel(make);
-        FormatHelper.formatHelperVehicleDisplay(queryResult, "Returned model");
+        displaySearchResult(queryResult, "Vehicles make that matches: " + make);
     }
 
     public void processGetByYear(){
         Year currentYear = Year.now();
         int pYear = Integer.parseInt(String.valueOf(currentYear));
-        int year = Console.askForInt("What is the year?", 1920, pYear);
-        List<Vehicle> queryResult = dealership.getVehiclesByYear(year);
-        FormatHelper.formatHelperVehicleDisplay(queryResult);
+        int minYear = Console.askForInt("What is the minimum year?", 1920, pYear);
+        int maxYear = Console.askForInt("What is the maximum year?", 1920, pYear);
+        List<Vehicle> queryResult = dealership.getVehiclesByYear(minYear, maxYear);
+        String header = "Vehicles year ranging from %d to %d".formatted(minYear, maxYear);
+        displaySearchResult(queryResult, header);
     }
 
     public void processGetByColor(){
         String color = Console.askForString("What color is the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByColor(color);
         FormatHelper.formatHelperVehicleDisplay(queryResult, "Color");
+     //   Console.promptForExit("You can exit the program at any time by using", "x");
     }
 
     public void processGetByMileage(){
@@ -95,18 +111,64 @@ public class UserInterface {
         int maxMilage = Console.askForInt("Maximum Mileage", 0 , 9999999);
         List<Vehicle> queryResult = dealership.getVehiclesByMileage(minMileage, maxMilage);
         FormatHelper.formatHelperVehicleDisplay(queryResult, "Mileage");
+      //  Console.promptForExit("You can exit the program at any time by using", "x");
     }
 
     public void processGetByType(){
         String type = Console.askForString("What is the make/model of the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByType(type);
         FormatHelper.formatHelperVehicleDisplay(queryResult, "Returned model");
+      //  Console.promptForExit("You can exit the program at any time by using", "x");
     }
 
     public void processGetAllVehicle(){
         List<Vehicle> all = dealership.getAllVehicle();
-        FormatHelper.formatHelperVehicleDisplay(all, "All");
+        String header = "All listed vehicles of " + dealership.getName();
+        displaySearchResult(all, header);
     }
+
+    public void processAddVehcile(){
+
+        boolean isAddingVehicle = true;
+        String choice;
+
+        while (isAddingVehicle){
+            Year currentYear = Year.now();
+            int pYear = Integer.parseInt(String.valueOf(currentYear));
+            int pVin;
+            String vin = Console.askForString("What is the vin of the vehicle");
+            try {
+                pVin = Integer.parseInt(vin);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+            String model = Console.askForString("What is the model of the vehicle");
+            String make = Console.askForString("What is the make of the vehicle");
+            int year = Console.askForInt("What is the year of the vehicle?", 1920, pYear);
+            String type = Console.askForString("What type is the vehicle");
+            String color = Console.askForString("What color is the vehicle");
+            int odometer = Console.askForInt("What is the mileage of the vehicle?", 0, 9999999);
+            double price = Console.askForDouble("What is the price of the vehicle?");
+
+            dealership.addVehicle(
+                    pVin, year, make, model, type, color, odometer, price
+            );
+            choice = Console.askForString("Would you like to add another one? (y or leave empty to exit): ");
+
+         if(!choice.equalsIgnoreCase("y")){
+             System.out.println("Thank you. Returning you to the main menu");
+             isAddingVehicle = false;
+         }
+
+        }
+
+
+     //   Console.promptForExit("Done? You can exit the program at any time", "x");
+
+
+    }
+
+
 
 }
 
