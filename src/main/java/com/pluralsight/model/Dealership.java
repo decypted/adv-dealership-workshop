@@ -171,8 +171,8 @@ public class Dealership {
         if(vToDel != null){
             try {
                 DealershipInventoryFileManager dealershipInventoryFileManager = new DealershipInventoryFileManager(dealerCsvFile);
-                dealershipInventoryFileManager.saveDealership(this);
                 this.inventory.remove(vToDel);
+                dealershipInventoryFileManager.saveDealership(this);
             } catch (Exception e) {
                 return "An err occurred" + e.getMessage();
             }

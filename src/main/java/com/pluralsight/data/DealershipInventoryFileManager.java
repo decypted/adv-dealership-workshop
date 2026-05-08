@@ -67,8 +67,12 @@ public class DealershipInventoryFileManager {
         return null;
     }
 
-//
 
+    /**
+     * saveDealership overwrites the existing content in the file.
+     * This will write the dealership info first followed by the list of all vehicles currently in the inventory
+     * @param dealership Contains the data to be saved.
+     */
     public void saveDealership(Dealership dealership) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.dealershipInventoryFileName, false));

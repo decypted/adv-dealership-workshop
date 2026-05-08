@@ -168,7 +168,7 @@ public class UserInterface {
         boolean isDeletingVehicle = true;
 
         while(isDeletingVehicle){
-            int vin = Console.askForInt("What is the vin of the vehicle you want to delete: ", 1, 999999999);
+            int vin = Console.askForInt("What is the vin of the vehicle you would like to delete: ", 1, 999999999);
             List<Vehicle> vehicle = dealership.getVehicleByVin(vin);
 
             if(vehicle.isEmpty()){
@@ -181,8 +181,14 @@ public class UserInterface {
                     System.out.println("Thank you. Returning you to the main menu");
                     isDeletingVehicle = false;
                 } else {
-                    displaySearchResult(vehicle, "Deleted" + vehicle + "from inventory");
-                    dealership.deleteVehicle(vin);
+                    String r = dealership.deleteVehicle(vin);
+                    System.out.println(r);
+
+                    String exitPrompt = Console.askForString("Would you like to delete another vehicle? (y/n): ");
+
+                    if(exitPrompt.equalsIgnoreCase("n")){
+                        isDeletingVehicle = false;
+                    }
                 }
             }
 
