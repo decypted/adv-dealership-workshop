@@ -1,6 +1,7 @@
 package com.pluralsight.model;
 
 import com.pluralsight.data.DealershipInventoryFileManager;
+import com.pluralsight.ui.FormatHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,20 +12,18 @@ public class Dealership {
     private String address;
     private String phone;
     private ArrayList<Vehicle> inventory;
+    private String dealerCsvFile;
 
     public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.inventory = new ArrayList<>();
+        this.dealerCsvFile = "files/inventory.csv";
     }
 
     public void addVehicle(Vehicle vehicle) {
         this.inventory.add(vehicle);
-    }
-
-    public void deleteVehicle(Vehicle vehicle){
-        this.inventory.remove(vehicle);
     }
 
     public ArrayList<Vehicle> getInventory() {
@@ -123,9 +122,21 @@ public class Dealership {
         return queryVehicles;
     }
 
+    public List<Vehicle> getVehicleByVin(int vin){
+        List<Vehicle> queryVehicle = new ArrayList<>();
+        for(Vehicle v: this.getInventory()){
+            if(v.getVin() == vin){
+                queryVehicle.add(v);
+            }
+        }
+        return queryVehicle;
+    }
+
     public List<Vehicle> getAllVehicle(){
         return new ArrayList<>(this.getInventory());
     }
+
+
 
     public void addVehicle(
             int vin,
@@ -140,13 +151,35 @@ public class Dealership {
 
         Vehicle v = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
         this.inventory.add(v);
-        DealershipInventoryFileManager dealershipInventoryFileManager = new DealershipInventoryFileManager("files/inventory.csv");
+        DealershipInventoryFileManager dealershipInventoryFileManager = new DealershipInventoryFileManager(dealerCsvFile);
 
         try {
             dealershipInventoryFileManager.saveDealership(this);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String deleteVehicle(int vin){
+        Vehicle vToDel = null;
+        for(Vehicle v : inventory){
+            if(v.getVin() == vin){
+                vToDel = v;
+            }
+        }
+
+        if(vToDel != null){
+            try {
+                DealershipInventoryFileManager dealershipInventoryFileManager = new DealershipInventoryFileManager(dealerCsvFile);
+                dealershipInventoryFileManager.saveDealership(this);
+                this.inventory.remove(vToDel);
+            } catch (Exception e) {
+                return "An err occurred" + e.getMessage();
+            }
+        } else {
+            return "No vehicle of this vin was found";
+        }
+        return "Vehicle was deleted";
     }
 
 

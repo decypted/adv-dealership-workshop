@@ -4,11 +4,11 @@ import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
 
 import java.io.*;
-import java.util.ArrayList;
+
 
 public class DealershipInventoryFileManager {
     private final String dealershipInventoryFileName;
-    ArrayList<Vehicle> vehicle = new ArrayList<>();
+
 
 
     public DealershipInventoryFileManager(String dealershipFileName) {
@@ -93,11 +93,10 @@ public class DealershipInventoryFileManager {
                 );
                 bufferedWriter.write(vehicleLine);
             }
-            System.out.println("Inventory was saved.");
             bufferedWriter.close();
 
         } catch (IOException e) {
-            System.out.println("File not found" + e.getMessage());
+            System.out.println("An error occurred" + e.getMessage());
         }
     }
 }

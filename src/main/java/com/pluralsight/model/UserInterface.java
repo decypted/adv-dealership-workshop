@@ -1,14 +1,15 @@
 package com.pluralsight.model;
 
+import com.pluralsight.JavaHelpers.ColorCodes;
 import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
 
-import java.lang.classfile.Interfaces;
-import java.time.LocalDate;
+
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class UserInterface {
     Dealership dealership;
@@ -60,6 +61,7 @@ public class UserInterface {
                 case "6" -> processGetByType();
                 case "7" -> processGetAllVehicle();
                 case "8" -> processAddVehcile();
+                case "9" -> processDeleteVehicle();
                 case "X" -> {
                     System.out.println("Goodbye! We hope to see you again");
                     running = false;
@@ -159,15 +161,34 @@ public class UserInterface {
              System.out.println("Thank you. Returning you to the main menu");
              isAddingVehicle = false;
          }
+        }
+    }
+
+    public void processDeleteVehicle(){
+        boolean isDeletingVehicle = true;
+
+        while(isDeletingVehicle){
+            int vin = Console.askForInt("What is the vin of the vehicle you want to delete: ", 1, 999999999);
+            List<Vehicle> vehicle = dealership.getVehicleByVin(vin);
+
+            if(vehicle.isEmpty()){
+                System.out.printf("%s%s%s", ColorCodes.RED_BACKGROUND, "No vehicle of this vin was found in our dealership inventory", ColorCodes.RESET);
+            } else {
+                System.out.println("Found " + vehicle);
+                String option = Console.askForString("Would you like to delete this vehicle from " + dealership.getName() + "(leave empty to cancel, any input to proceed.)");
+
+                if(option.isEmpty()){
+                    System.out.println("Thank you. Returning you to the main menu");
+                    isDeletingVehicle = false;
+                } else {
+                    displaySearchResult(vehicle, "Deleted" + vehicle + "from inventory");
+                    dealership.deleteVehicle(vin);
+                }
+            }
 
         }
 
-
-     //   Console.promptForExit("Done? You can exit the program at any time", "x");
-
-
     }
-
 
 
 }
