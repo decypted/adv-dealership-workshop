@@ -12,7 +12,7 @@ public class Dealership {
     private String address;
     private String phone;
     private ArrayList<Vehicle> inventory;
-    private String dealerCsvFile;
+    private final String dealerCsvFile;
 
     public Dealership(String name, String address, String phone) {
         this.name = name;

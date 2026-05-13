@@ -1,12 +1,14 @@
 package com.pluralsight.model.Contract;
 
+import com.pluralsight.model.Vehicle;
+
 public class LeaseContract extends Contract {
     double expectedEndValue;
     double leastFee;
     double monthlyPayment;
 
 
-    public LeaseContract(String date, String customerName, String customerEmail, String vehicleSold, double totalPrice, double monthlyPayment, double expectedEndValue, double leastFee, double monthlyPayment1) {
+    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment, double expectedEndValue, double leastFee, double monthlyPayment1) {
         super(date, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
         this.expectedEndValue = expectedEndValue;
         this.leastFee = leastFee;

@@ -39,7 +39,8 @@ public class UserInterface {
                     |   [7]  All Vehicles                     |
                     |   [8]  Add Vehicle                      |
                     |   [9]  Remove Vehicle                   |
-                    |                                         |
+                    |   [10] Sell a Vehicle                   |
+                    |   [11] Lease a Vehicle                  |
                     +-----------------------------------------+
                     |   [X] Quit                             |
                     +-----------------------------------------+

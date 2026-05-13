@@ -1,13 +1,15 @@
 package com.pluralsight.model.Contract;
 
+import com.pluralsight.model.Vehicle;
+
 public class SalesContract extends Contract {
-    float salesTax;
+    double salesTax;
     final double recordingFee = 100;
     double processingFee;
     boolean isFinancing;
     double financedMonthlyPayment;
 
-    public SalesContract(String date, String customerName, String customerEmail, String vehicleSold, double totalPrice, double monthlyPayment, float salesTax, double processingFee, boolean isFinancing, double financedMonthlyPayment) {
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment, double salesTax, double processingFee, boolean isFinancing, double financedMonthlyPayment) {
         super(date, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
         this.salesTax = salesTax;
         this.processingFee = processingFee;
@@ -15,11 +17,11 @@ public class SalesContract extends Contract {
         this.financedMonthlyPayment = financedMonthlyPayment;
     }
 
-    public float getSalesTax() {
+    public double getSalesTax() {
         return salesTax;
     }
 
-    public void setSalesTax(float salesTax) {
+    public void setSalesTax(double salesTax) {
         this.salesTax = salesTax;
     }
 

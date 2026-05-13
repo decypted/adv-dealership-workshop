@@ -1,14 +1,16 @@
 package com.pluralsight.model.Contract;
 
+import com.pluralsight.model.Vehicle;
+
 public abstract class Contract {
     String date;
     String customerName;
     String customerEmail;
-    String vehicleSold;
+    Vehicle vehicleSold;
     double totalPrice;
     double monthlyPayment;
 
-    public Contract(String date, String customerName, String customerEmail, String vehicleSold, double totalPrice, double monthlyPayment) {
+    public Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment) {
         this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -41,24 +43,16 @@ public abstract class Contract {
         this.customerEmail = customerEmail;
     }
 
-    public String getVehicleSold() {
+    public Vehicle getVehicleSold() {
         return vehicleSold;
     }
 
-    public void setVehicleSold(String vehicleSold) {
+    public void setVehicleSold(Vehicle vehicleSold) {
         this.vehicleSold = vehicleSold;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
     }
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public double getMonthlyPayment() {
-        return monthlyPayment;
     }
 
     public void setMonthlyPayment(double monthlyPayment) {
