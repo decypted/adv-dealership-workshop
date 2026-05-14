@@ -1,10 +1,13 @@
 package com.pluralsight.model;
 
+import com.pluralsight.data.ContractFileManager;
 import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.ui.FormatHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pluralsight.Main.dealership;
 
 
 public class Dealership {
@@ -52,6 +55,10 @@ public class Dealership {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public static Dealership loadDealership(String name, String address, String phone){
+        return new Dealership(name, address, phone);
     }
 
     public void setInventory(ArrayList<Vehicle> inventory) {
@@ -191,4 +198,5 @@ public class Dealership {
                 ", address='" + address + '\'' + '\n' +
                 "Current Inventory:" + "\n"  + inventory + "\n";
     }
+
 }

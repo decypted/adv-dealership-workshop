@@ -1,6 +1,7 @@
 package com.pluralsight.model;
 
 import com.pluralsight.JavaHelpers.ColorCodes;
+import com.pluralsight.controller.ContractController;
 import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
@@ -13,9 +14,11 @@ import java.util.List;
 
 public class UserInterface {
     Dealership dealership;
+    private ContractController controler;
 
     public UserInterface(Dealership dealership){
         this.dealership = dealership;
+        this.controler = new ContractController(dealership);
     }
 
 
@@ -41,6 +44,7 @@ public class UserInterface {
                     |   [9]  Remove Vehicle                   |
                     |   [10] Sell a Vehicle                   |
                     |   [11] Lease a Vehicle                  |
+                        [12] Load Contract Test
                     +-----------------------------------------+
                     |   [X] Quit                             |
                     +-----------------------------------------+
@@ -63,6 +67,7 @@ public class UserInterface {
                 case "7" -> processGetAllVehicle();
                 case "8" -> processAddVehcile();
                 case "9" -> processDeleteVehicle();
+                case "12" -> processLoadContract();
                 case "X" -> {
                     System.out.println("Goodbye! We hope to see you again");
                     running = false;
@@ -194,6 +199,11 @@ public class UserInterface {
             }
 
         }
+
+    }
+
+    public void processLoadContract(){
+        controler.loadContract();
 
     }
 
