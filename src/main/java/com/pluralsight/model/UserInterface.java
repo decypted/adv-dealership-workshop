@@ -237,9 +237,6 @@ public class UserInterface {
             controler.saveContract(sc);
             isCreatingSaleContract = false;
 
-
-
-
         }
 
 
@@ -247,16 +244,19 @@ public class UserInterface {
     }
 
     public void processLoadContract(){
-        String m = String.valueOf(controler.loadContract());
-
-        displayContractTest(m);
+        List<Contract> allContract = controler.loadContract();
+        FormatHelper.formatContractHeaderHelper();
+        for(Contract c : allContract){
+            FormatHelper.displayContract(c);
+        }
     }
 
     public void processLoadSalesContract(){
       List<Contract> salesContract = controler.loadAllSalesContract();
         System.out.println(salesContract.size());
+        FormatHelper.formatContractHeaderHelper();
         for (Contract c : salesContract) {
-            System.out.println(c);
+            FormatHelper.displayContract(c);
 
         }
 

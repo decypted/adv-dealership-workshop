@@ -1,6 +1,9 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.JavaHelpers.ColorCodes;
+import com.pluralsight.model.Contract.Contract;
+import com.pluralsight.model.Contract.LeaseContract;
+import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.model.Vehicle;
 
 import java.awt.*;
@@ -59,5 +62,67 @@ public class FormatHelper {
                 "PRICE"
                 );
         System.out.println("-".repeat(120));
+    }
+
+    public static void formatContractHeaderHelper(){
+        System.out.println("-".repeat(180));
+
+        System.out.printf(
+                "%-15s %-12s %-20s %-10s %-8s %-12s %-15s %-15s %-15s %-15s %-15s %-15s%n",
+                "CONTRACT TYPE",
+                "DATE",
+                "CUSTOMER",
+                "YEAR",
+                "COLOR",
+                "MILEAGE",
+                "MAKE",
+                "MODEL",
+                "VEHICLE TYPE",
+                "PRICE",
+                "TOTAL PRICE",
+                "MONTHLY PAY"
+        );
+
+        System.out.println("-".repeat(180));
+    }
+
+    public static void displayContract(Contract contract) {
+
+        if (contract instanceof SalesContract sales) {
+
+            System.out.printf(
+                    "%-15s %-12s %-20s %-10d %-8s %-12d %-15s %-15s %-15s $%-14.2f $%-14.2f $%-14.2f%n",
+                    "SALE",
+                    sales.getDate(),
+                    sales.getCustomerName(),
+                    sales.getVehicleSold().getYear(),
+                    sales.getVehicleSold().getColor(),
+                    sales.getVehicleSold().getOdometer(),
+                    sales.getVehicleSold().getMake(),
+                    sales.getVehicleSold().getModel(),
+                    sales.getVehicleSold().getVehicleType(),
+                    sales.getVehicleSold().getPrice(),
+                    sales.getTotalPrice(),
+                    sales.getMonthlyPayment()
+            );
+
+        } else if (contract instanceof LeaseContract lease) {
+
+            System.out.printf(
+                    "%-15s %-12s %-20s %-10d %-8s %-12d %-15s %-15s %-15s $%-14.2f $%-14.2f $%-14.2f%n",
+                    "LEASE",
+                    lease.getDate(),
+                    lease.getCustomerName(),
+                    lease.getVehicleSold().getYear(),
+                    lease.getVehicleSold().getColor(),
+                    lease.getVehicleSold().getOdometer(),
+                    lease.getVehicleSold().getMake(),
+                    lease.getVehicleSold().getModel(),
+                    lease.getVehicleSold().getVehicleType(),
+                    lease.getVehicleSold().getPrice(),
+                    lease.getTotalPrice(),
+                    lease.getMonthlyPayment()
+            );
+        }
     }
 }
