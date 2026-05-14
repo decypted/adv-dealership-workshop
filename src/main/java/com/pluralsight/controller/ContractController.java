@@ -7,6 +7,7 @@ import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.model.Dealership;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContractController {
@@ -27,14 +28,20 @@ public class ContractController {
     }
 
     public List<Contract> loadAllSalesContract(){
-        List<Contract> c = contractFileManager.loadContract();
-        return SalesContract.loadAllSalesContract(c);
+        List<Contract> contracts = loadContract();
+        List<Contract> salesContract = new ArrayList<>();
+        for (Contract c : contracts) {
+            if (c instanceof SalesContract) {
+                salesContract.add(c);
+            }
+        }
+        return salesContract;
     }
 
     public void saveContract(Contract c){
         contractFileManager.writeContract(c);
-        dealership.removeVehicle(c.getVehicleSold());
         dealershipInventoryFileManager.saveDealership(dealership);
+        dealership.removeVehicle(c.getVehicleSold());
 
     }
 

@@ -5,18 +5,17 @@ import com.pluralsight.model.Contract.LeaseContract;
 import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContractFileManager {
     private final String contractFileName;
     private final Dealership dealership;
-    List<Contract> contracts = new ArrayList<>(); // C
 
     public ContractFileManager(String contractFile,Dealership dealership) {
         this.contractFileName = contractFile;
@@ -25,6 +24,7 @@ public class ContractFileManager {
     }
 
     public List<Contract> loadContract() {
+        List<Contract> contracts = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(this.contractFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -40,11 +40,6 @@ public class ContractFileManager {
                 String customerName = parts[2];
                 String customerEmail = parts[3];
                 int vin = Integer.parseInt(parts[4]);
-                List<Vehicle> matches = dealership.getVehicleByVin(vin);
-                if(matches.isEmpty()){
-                    continue;
-                }
-                Vehicle vehicle = dealership.getVehicleByVin(vin).getFirst();
                 int year = Integer.parseInt(parts[5]);
                 String make = parts[6];
                 String model = parts[7];
@@ -52,7 +47,7 @@ public class ContractFileManager {
                 String color = parts[9];
                 int odometer = Integer.parseInt(parts[10]);
                 double vehiclePrice = Double.parseDouble(parts[11]);
-
+                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
                 if (contractType.equalsIgnoreCase("SALE")) {
                     double salesTax = Double.parseDouble(parts[12]);
                     double recordingFee = Double.parseDouble(parts[13]);

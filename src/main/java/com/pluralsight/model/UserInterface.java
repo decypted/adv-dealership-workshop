@@ -253,8 +253,13 @@ public class UserInterface {
     }
 
     public void processLoadSalesContract(){
-       String sc = controler.loadAllSalesContract().toString();
-        displayContractTest(sc);
+      List<Contract> salesContract = controler.loadAllSalesContract();
+        System.out.println(salesContract.size());
+        for (Contract c : salesContract) {
+            System.out.println(c);
+
+        }
+
     }
 
 
