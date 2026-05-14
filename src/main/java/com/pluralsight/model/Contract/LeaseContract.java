@@ -39,4 +39,13 @@ public class LeaseContract extends Contract {
     public double getMonthlyPayment() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "LeaseContract{" +
+                "expectedEndValue=" + expectedEndValue +
+                ", leastFee=" + leastFee +
+                ", monthlyPayment=" + monthlyPayment +
+                "} ";
+    }
 }

@@ -2,7 +2,6 @@ package com.pluralsight.model;
 
 import com.pluralsight.JavaHelpers.ColorCodes;
 import com.pluralsight.controller.ContractController;
-import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
 
@@ -81,6 +80,9 @@ public class UserInterface {
     public void displaySearchResult(List<Vehicle> results, String header){
         FormatHelper.formatHelperVehicleDisplay(results, header);
         Console.promptForExit("You can exit the program at any time by using\n", "x");
+    }
+    public void displayContractTest(String c){
+        System.out.println(c);
     }
 
     public void processGetByPriceRequest(){
@@ -203,8 +205,9 @@ public class UserInterface {
     }
 
     public void processLoadContract(){
-        controler.loadContract();
+        String m = String.valueOf(controler.loadContract());
 
+        displayContractTest(m);
     }
 
 

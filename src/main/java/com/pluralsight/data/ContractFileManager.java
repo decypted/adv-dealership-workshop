@@ -10,11 +10,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContractFileManager {
     private final String contractFileName;
     private final Dealership dealership;
+    List<Contract> contracts = new ArrayList<>(); // C
 
     public ContractFileManager(String contractFile,Dealership dealership) {
         this.contractFileName = contractFile;
@@ -22,7 +24,7 @@ public class ContractFileManager {
 
     }
 
-    public Contract loadContract() {
+    public List<Contract> loadContract() {
         try {
             FileReader fileReader = new FileReader(this.contractFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -59,19 +61,10 @@ public class ContractFileManager {
                     boolean isFinancing = parts[16].equalsIgnoreCase("YES");
                     double monthlyPayment = Double.parseDouble(parts[17]);
 
+                    contracts.add(new SalesContract(date, customerName, customerEmail, vehicle, totalPrice, monthlyPayment, salesTax, processingFee, isFinancing, monthlyPayment  ));
 
-                    return new SalesContract(
-                            date,
-                            customerName,
-                            customerEmail,
-                            vehicle,
-                            totalPrice,
-                            monthlyPayment,
-                            salesTax,
-                            processingFee,
-                            isFinancing,
-                            monthlyPayment
-                    );
+
+
                 }
                 if (contractType.equalsIgnoreCase("LEASE")) {
                     double expectedEndingValue = Double.parseDouble(parts[12]);
@@ -79,23 +72,13 @@ public class ContractFileManager {
                     double totalPrice = Double.parseDouble(parts[14]);
                     double monthlyPayment = Double.parseDouble(parts[15]);
 
-                    return new LeaseContract(
-                            date,
-                            customerName,
-                            customerEmail,
-                            vehicle,
-                            totalPrice,
-                            monthlyPayment,
-                            expectedEndingValue,
-                            leastFee,
-                            monthlyPayment
-                    );
+                    contracts.add(new LeaseContract(date, customerName, customerEmail, vehicle, totalPrice, monthlyPayment, expectedEndingValue, leastFee, monthlyPayment));
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Err in SALE Contract Parsing" + e.getMessage());
         }
-        return null;
+        return contracts;
     }
 
     public void writeContract(Contract contract) {
@@ -147,9 +130,10 @@ public class ContractFileManager {
             bufferedWriter.close();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Err in LEASE Contract Parsing" + e.getMessage());
         }
     }
+
 }
 
 

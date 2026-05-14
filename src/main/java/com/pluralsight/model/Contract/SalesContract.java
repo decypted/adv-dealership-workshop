@@ -61,4 +61,15 @@ public class SalesContract extends Contract {
     public double getMonthlyPayment() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "SalesContract{" +
+                "salesTax=" + salesTax +
+                ", recordingFee=" + recordingFee +
+                ", processingFee=" + processingFee +
+                ", isFinancing=" + isFinancing +
+                ", financedMonthlyPayment=" + financedMonthlyPayment +
+                "} ";
+    }
 }

@@ -75,6 +75,15 @@ public class Dealership {
         return queryVehicles;
     }
 
+    public Vehicle getVehiclePriceByVin(int vin){
+        for(Vehicle v : this.getInventory()){
+            if(v.getPrice() == vin){
+                return v;
+            }
+        }
+        return null;
+    }
+
     public List<Vehicle> getVehiclesByMakeOrModel(String makemodel){
         List<Vehicle> queryVehicles = new ArrayList<>();
         for(Vehicle v: this.getInventory()){
