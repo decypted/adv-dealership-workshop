@@ -2,6 +2,8 @@ package com.pluralsight.model;
 
 import com.pluralsight.JavaHelpers.ColorCodes;
 import com.pluralsight.controller.ContractController;
+import com.pluralsight.model.Contract.Contract;
+import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
 
@@ -44,6 +46,7 @@ public class UserInterface {
                     |   [10] Sell a Vehicle                   |
                     |   [11] Lease a Vehicle                  |
                         [12] Load Contract Test
+                        [13] Load Sales Contract
                     +-----------------------------------------+
                     |   [X] Quit                             |
                     +-----------------------------------------+
@@ -66,7 +69,9 @@ public class UserInterface {
                 case "7" -> processGetAllVehicle();
                 case "8" -> processAddVehcile();
                 case "9" -> processDeleteVehicle();
+                case "10" -> processWriteNewSaleContract();
                 case "12" -> processLoadContract();
+                case "13" -> processLoadSalesContract();
                 case "X" -> {
                     System.out.println("Goodbye! We hope to see you again");
                     running = false;
@@ -112,7 +117,8 @@ public class UserInterface {
     public void processGetByColor(){
         String color = Console.askForString("What color is the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByColor(color);
-        FormatHelper.formatHelperVehicleDisplay(queryResult, "Color");
+        String header = "Color";
+        displaySearchResult(queryResult, header);
      //   Console.promptForExit("You can exit the program at any time by using", "x");
     }
 
@@ -120,15 +126,16 @@ public class UserInterface {
         int minMileage = Console.askForInt("Minimum Mileage", 0 , 9999999);
         int maxMilage = Console.askForInt("Maximum Mileage", 0 , 9999999);
         List<Vehicle> queryResult = dealership.getVehiclesByMileage(minMileage, maxMilage);
-        FormatHelper.formatHelperVehicleDisplay(queryResult, "Mileage");
-      //  Console.promptForExit("You can exit the program at any time by using", "x");
+        String header = "Mileage";
+        displaySearchResult(queryResult, header);
+
     }
 
     public void processGetByType(){
         String type = Console.askForString("What is the make/model of the vehicle");
         List<Vehicle> queryResult = dealership.getVehiclesByType(type);
-        FormatHelper.formatHelperVehicleDisplay(queryResult, "Returned model");
-      //  Console.promptForExit("You can exit the program at any time by using", "x");
+        String header = "Type";
+        displaySearchResult(queryResult, header);
     }
 
     public void processGetAllVehicle(){
@@ -204,10 +211,50 @@ public class UserInterface {
 
     }
 
+    public void processWriteNewSaleContract(){
+        boolean isCreatingSaleContract = true;
+        while (isCreatingSaleContract){
+            int vin = Console.askForInt("What is the vin of the vehicle being sold? ", 1, 999999999);
+            List<Vehicle> vehicle = dealership.getVehicleByVin(vin);
+
+            if(vehicle.isEmpty()){
+                System.out.println("Vehicle of this vin does not exist");
+                return;
+            }
+
+            Vehicle v = vehicle.getFirst();
+            System.out.println("Found. Vehicle" + v.getModel() + v.getPrice() );
+            String date = String.valueOf(Console.askForDate("When was the vehicle sold?"));
+            String customerName = Console.askForString("What is the customer name");
+            String customerEmail = Console.askForString("What is the customer email");
+            boolean isFinancing = Console.askForString("Financing? (y/n): ").equalsIgnoreCase("y");
+
+            SalesContract sc = new SalesContract(date, customerName, customerEmail, v, isFinancing);
+            System.out.printf("Sale Contract: Vehicle: %s %s %s \n for %s %s on %s. Price: $%,.2f ", v.getModel(), v.getMake(), v.getYear(), customerName, customerEmail, date, sc.getTotalPrice() );
+            if(isFinancing){
+                System.out.printf("Individual is financing. Terms: $%,.2f/mo for %s month at %.2f apr \n", sc.getMonthlyPayment(), sc.getLoanTerm(), sc.getApr() * 100);
+            }
+            controler.saveContract(sc);
+            isCreatingSaleContract = false;
+
+
+
+
+        }
+
+
+
+    }
+
     public void processLoadContract(){
         String m = String.valueOf(controler.loadContract());
 
         displayContractTest(m);
+    }
+
+    public void processLoadSalesContract(){
+       String sc = controler.loadAllSalesContract().toString();
+        displayContractTest(sc);
     }
 
 

@@ -61,7 +61,7 @@ public class ContractFileManager {
                     boolean isFinancing = parts[16].equalsIgnoreCase("YES");
                     double monthlyPayment = Double.parseDouble(parts[17]);
 
-                    contracts.add(new SalesContract(date, customerName, customerEmail, vehicle, totalPrice, monthlyPayment, salesTax, processingFee, isFinancing, monthlyPayment  ));
+                    contracts.add(new SalesContract(date, customerName, customerEmail, vehicle, isFinancing  ));
 
 
 
@@ -118,7 +118,7 @@ public class ContractFileManager {
                         contract.getVehicleSold().getVehicleType(),
                         contract.getVehicleSold().getColor(),
                         contract.getVehicleSold().getOdometer(),
-                        contract.getVehicleSold().getPrice(),
+                        contract.getTotalPrice(),
                         lc.getExpectedEndValue(),
                         lc.getLeastFee(),
                         contract.getTotalPrice(),

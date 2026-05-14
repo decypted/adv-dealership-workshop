@@ -1,5 +1,7 @@
 package com.pluralsight.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Console {
@@ -76,5 +78,22 @@ public class Console {
         }
         return false;
     }
+
+    public static LocalDate askForDate(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                String input = scanner.nextLine().trim();
+                DateTimeFormatter formatter = input.length() <= 8
+                        ? DateTimeFormatter.ofPattern("M/d/yy")
+                        : DateTimeFormatter.ofPattern("M/d/yyyy");
+                return LocalDate.parse(input, formatter);
+            } catch (Exception e) {
+                System.out.println("Invalid date. Please a use M/d/yy or M/d/yyyy (example: 4/2/26 or 4/2/2026)");
+            }
+        }
+    }
+
+
 
 }

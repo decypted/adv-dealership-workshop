@@ -17,6 +17,8 @@ public class Dealership {
     private ArrayList<Vehicle> inventory;
     private final String dealerCsvFile;
 
+
+
     public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
@@ -75,13 +77,8 @@ public class Dealership {
         return queryVehicles;
     }
 
-    public Vehicle getVehiclePriceByVin(int vin){
-        for(Vehicle v : this.getInventory()){
-            if(v.getPrice() == vin){
-                return v;
-            }
-        }
-        return null;
+    public void removeVehicle(Vehicle v) {
+        this.inventory.remove(v);
     }
 
     public List<Vehicle> getVehiclesByMakeOrModel(String makemodel){
