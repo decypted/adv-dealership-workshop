@@ -3,6 +3,7 @@ package com.pluralsight.controller;
 import com.pluralsight.data.ContractFileManager;
 import com.pluralsight.data.DealershipInventoryFileManager;
 import com.pluralsight.model.Contract.Contract;
+import com.pluralsight.model.Contract.LeaseContract;
 import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.model.Dealership;
 
@@ -38,11 +39,25 @@ public class ContractController {
         return salesContract;
     }
 
+    public List<Contract> loadLeaseContract(){
+        List<Contract> contracts = loadContract();
+        List<Contract> leaseContract = new ArrayList<>();
+
+        for(Contract c : contracts){
+            if(c instanceof LeaseContract){
+                leaseContract.add(c);
+            }
+        }
+        return leaseContract;
+    }
+
     public void saveContract(Contract c){
         contractFileManager.writeContract(c);
-        dealershipInventoryFileManager.saveDealership(dealership);
         dealership.removeVehicle(c.getVehicleSold());
+        dealershipInventoryFileManager.saveDealership(dealership);
+
 
     }
+
 
 }

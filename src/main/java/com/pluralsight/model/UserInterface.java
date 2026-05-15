@@ -3,6 +3,7 @@ package com.pluralsight.model;
 import com.pluralsight.JavaHelpers.ColorCodes;
 import com.pluralsight.controller.ContractController;
 import com.pluralsight.model.Contract.Contract;
+import com.pluralsight.model.Contract.LeaseContract;
 import com.pluralsight.model.Contract.SalesContract;
 import com.pluralsight.ui.Console;
 import com.pluralsight.ui.FormatHelper;
@@ -45,8 +46,9 @@ public class UserInterface {
                     |   [9]  Remove Vehicle                   |
                     |   [10] Sell a Vehicle                   |
                     |   [11] Lease a Vehicle                  |
-                        [12] Load Contract Test
-                        [13] Load Sales Contract
+                    |    [12] Load Contract Test              |
+                    |    [13] Load Sales Contract             |  
+                    |    [14] Load Lease Contract             |  
                     +-----------------------------------------+
                     |   [X] Quit                             |
                     +-----------------------------------------+
@@ -70,8 +72,10 @@ public class UserInterface {
                 case "8" -> processAddVehcile();
                 case "9" -> processDeleteVehicle();
                 case "10" -> processWriteNewSaleContract();
+                case "11" -> processWriteNewLeaseContract();
                 case "12" -> processLoadContract();
                 case "13" -> processLoadSalesContract();
+                case "14" -> processLoadLeaseContract();
                 case "X" -> {
                     System.out.println("Goodbye! We hope to see you again");
                     running = false;
@@ -221,7 +225,6 @@ public class UserInterface {
                 System.out.println("Vehicle of this vin does not exist");
                 return;
             }
-
             Vehicle v = vehicle.getFirst();
             System.out.println("Found. Vehicle" + v.getModel() + v.getPrice() );
             String date = String.valueOf(Console.askForDate("When was the vehicle sold?"));
@@ -238,9 +241,31 @@ public class UserInterface {
             isCreatingSaleContract = false;
 
         }
+    }
 
+    public void processWriteNewLeaseContract(){
+        boolean isCreatingLeaseContract = true;
+        LeaseContract lce;
+        while (isCreatingLeaseContract){
+            int vin = Console.askForInt("What is the vin of the vehicle being sold? ", 1, 999999999);
+            List<Vehicle> vehicle = dealership.getVehicleByVin(vin);
 
+            if(vehicle.isEmpty()){
+                System.out.println("Vehicle of this vin does not exist");
+                return;
+            }
 
+            Vehicle v = vehicle.getFirst();
+            System.out.println("Found. Vehicle" + v.getModel() + v.getPrice() );
+            String date = String.valueOf(Console.askForDate("When was the vehicle sold?"));
+            String customerName = Console.askForString("What is the customer name");
+            String customerEmail = Console.askForString("What is the customer email");
+            LeaseContract lc = new LeaseContract(date, customerName, customerEmail, v);
+            System.out.printf("Lease Contract: Vehicle: %s %s %s \n for %s %s on %s. Monthly Payment: $%,.2f| Total Lease Contract Payment: $%,.2f \n", v.getModel(), v.getMake(), v.getYear(), customerName, customerEmail, date, lc.getMonthlyPayment(), lc.getTotalPaymentAfterInterest());
+            controler.saveContract(lc);
+            isCreatingLeaseContract = false;
+
+        }
     }
 
     public void processLoadContract(){
@@ -261,6 +286,19 @@ public class UserInterface {
         }
 
     }
+
+    public void processLoadLeaseContract(){
+        List<Contract> leaseContract = controler.loadLeaseContract();
+        System.out.println(leaseContract.size());
+        FormatHelper.formatContractHeaderHelper();
+        for (Contract c : leaseContract) {
+            FormatHelper.displayContract(c);
+
+        }
+
+    }
+
+
 
 
 }

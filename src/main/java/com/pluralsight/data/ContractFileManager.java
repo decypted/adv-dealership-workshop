@@ -67,7 +67,7 @@ public class ContractFileManager {
                     double totalPrice = Double.parseDouble(parts[14]);
                     double monthlyPayment = Double.parseDouble(parts[15]);
 
-                    contracts.add(new LeaseContract(date, customerName, customerEmail, vehicle, totalPrice, monthlyPayment, expectedEndingValue, leastFee, monthlyPayment));
+                    contracts.add(new LeaseContract(date, customerName, customerEmail, vehicle));
                 }
             }
         } catch (Exception e) {

@@ -6,13 +6,17 @@ public class LeaseContract extends Contract {
     double expectedEndValue;
     double leastFee;
     double monthlyPayment;
+    double apr;
+    double loanTerm;
 
 
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment, double expectedEndValue, double leastFee, double monthlyPayment1) {
+    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(date, customerName, customerEmail, vehicleSold, 0);
-        this.expectedEndValue = expectedEndValue;
-        this.leastFee = leastFee;
-        this.monthlyPayment = monthlyPayment1;
+        this.expectedEndValue = vehicleSold.getPrice() * 0.50;
+        this.leastFee = vehicleSold.getPrice() * 0.07;
+        this.loanTerm = 36;
+        this.apr = 0.04;
+        this.monthlyPayment = getMonthlyPayment();
     }
 
     public double getExpectedEndValue() {
@@ -31,13 +35,38 @@ public class LeaseContract extends Contract {
         this.leastFee = leastFee;
     }
 
+    public double getLoanTerm() {
+        return loanTerm;
+    }
+
+    public void setLoanTerm(double loanTerm) {
+        this.loanTerm = loanTerm;
+    }
+
+    public double getApr() {
+        return apr;
+    }
+
+    public void setApr(double apr) {
+        this.apr = apr;
+    }
+
 
     public double getTotalPrice() {
-        return 0;
+        return vehicleSold.getPrice() + getLeastFee();
+    }
+
+    public double getTotalPaymentAfterInterest() {
+        return getMonthlyPayment() * loanTerm;
     }
 
     public double getMonthlyPayment() {
-        return 0;
+        double principle = getTotalPrice() - getExpectedEndValue();
+        double apr = getApr();
+        double monthlyRate = apr / 12;
+        double topformula = monthlyRate * Math.pow(1 + monthlyRate, loanTerm);
+        double bottomformula = Math.pow(1 + monthlyRate, loanTerm) - 1;
+        return principle * (topformula / bottomformula);
     }
 
     @Override
