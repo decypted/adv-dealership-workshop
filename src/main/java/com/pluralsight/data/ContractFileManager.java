@@ -81,7 +81,7 @@ public class ContractFileManager {
         
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.contractFileName, true));
-            if (contract instanceof SalesContract){
+            if (contract instanceof SalesContract sc){
                  contractInfo = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f%n",
                         contract.getDate(),
                         contract.getCustomerName(),
@@ -94,11 +94,11 @@ public class ContractFileManager {
                         contract.getVehicleSold().getColor(),
                         contract.getVehicleSold().getOdometer(),
                         contract.getVehicleSold().getPrice(),
-                        ((SalesContract) contract).getSalesTax(),
-                        ((SalesContract) contract).getRecordingFee(),
-                        ((SalesContract) contract).getProcessingFee(),
+                        sc.getSalesTax(),
+                        sc.getRecordingFee(),
+                        sc.getProcessingFee(),
                         contract.getTotalPrice(),
-                        ((SalesContract) contract).isFinancing() ? "YES" : "NO",
+                        sc.isFinancing() ? "YES" : "NO",
                         contract.getMonthlyPayment());
             } else if (contract instanceof LeaseContract lc) {
                 contractInfo = String.format(
